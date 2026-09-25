@@ -8,7 +8,7 @@ export default function Footer() {
           FITLOG
         </Link>
 
-        <p>© 2027 FitLog. Train with intent. Log every set.</p>
+        <p>© 2026 FitLog. Train with intent. Log every set.</p>
       </div>
     </footer>
   );
