@@ -6,7 +6,7 @@ export async function getWorkouts() {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch workouts");
+    throw new Error("Failed to load workouts");
   }
 
   return response.json();

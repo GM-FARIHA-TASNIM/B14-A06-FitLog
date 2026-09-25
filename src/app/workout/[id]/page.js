@@ -1,50 +1,88 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Clock3, Flame, Star } from "lucide-react";
-import { notFound } from "next/navigation";
+import { ArrowLeft, Clock, Flame, Star } from "lucide-react";
 import { getWorkout } from "@/lib/api";
-import WorkoutActions from "@/components/WorkoutActions";
-import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import WorkoutActions from "@/components/WorkoutActions";
 
 export default async function WorkoutDetails({ params }) {
   const { id } = await params;
   const workout = await getWorkout(id);
 
   if (!workout) {
-    notFound();
+    return (
+      <>
+        <Navbar />
+
+        <main className="flex min-h-[60vh] items-center justify-center px-5">
+          <div className="text-center">
+            <p
+              className="text-xs font-bold tracking-[0.2em]"
+              style={{ color: "var(--accent)" }}
+            >
+              404
+            </p>
+
+            <h1 className="mt-3 font-display text-4xl font-bold uppercase">
+              Workout not found
+            </h1>
+
+            <Link
+              href="/"
+              className="mt-6 inline-flex rounded-md px-5 py-3 text-xs font-bold uppercase text-black"
+              style={{ backgroundColor: "var(--accent)" }}
+            >
+              Back to Library
+            </Link>
+          </div>
+        </main>
+
+        <Footer />
+      </>
+    );
   }
+
+  const specs = [
+    ["Equipment", workout.equipment],
+    ["Difficulty", workout.difficulty],
+    ["Sets", workout.sets],
+    ["Reps", workout.reps],
+    ["Duration", `${workout.duration} min`],
+    ["Calories", `${workout.caloriesBurned} kcal`],
+    ["Rating", workout.rating],
+  ];
 
   return (
     <>
       <Navbar />
 
-      <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-12">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
         <Link
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-xs text-white/50 hover:text-white"
+          className="mb-6 inline-flex items-center gap-1.5 text-sm text-white/50 hover:text-white"
         >
-          <ArrowLeft size={15} />
-          Back to Library
+          <ArrowLeft size={16} />
+          Back to library
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="relative h-96 overflow-hidden rounded-xl border bg-[#111419]">
-            <Image
+          <div
+            className="overflow-hidden rounded-2xl border bg-[#111419] lg:sticky lg:top-24 lg:self-start"
+            style={{ borderColor: "var(--border)" }}
+          >
+            <img
               src={workout.image}
               alt={workout.name}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              className="aspect-square h-full w-full object-cover"
             />
           </div>
 
-          <div className="flex flex-col justify-center">
+          <div>
             <div className="flex flex-wrap gap-2">
               {workout.muscleGroups.map((muscle) => (
                 <span
                   key={muscle}
-                  className="rounded-full px-3 py-1 text-[10px] font-bold uppercase text-black"
+                  className="rounded-full px-3 py-1 text-xs font-semibold text-black"
                   style={{ backgroundColor: "var(--accent)" }}
                 >
                   {muscle}
@@ -52,17 +90,17 @@ export default async function WorkoutDetails({ params }) {
               ))}
             </div>
 
-            <h1 className="mt-5 font-display text-5xl font-bold uppercase leading-none sm:text-6xl">
+            <h1 className="mt-5 font-display text-4xl font-bold uppercase leading-none sm:text-5xl">
               {workout.name}
             </h1>
 
-            <p className="mt-5 text-sm leading-7 text-white/60">
+            <p className="mt-4 leading-7 text-white/60">
               {workout.description}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-5 text-xs text-white/50">
+            <div className="mt-5 flex flex-wrap gap-5 text-xs text-white/50">
               <span className="flex items-center gap-1.5">
-                <Clock3 size={15} />
+                <Clock size={15} />
                 {workout.duration} min
               </span>
 
@@ -77,76 +115,51 @@ export default async function WorkoutDetails({ params }) {
               </span>
             </div>
 
-            <div
-              className="mt-8 overflow-hidden rounded-xl border"
+            <dl
+              className="mt-8 divide-y rounded-xl border bg-[#111419]"
               style={{ borderColor: "var(--border)" }}
             >
-              <div className="grid grid-cols-2">
+              {specs.map(([label, value]) => (
                 <div
-                  className="border-b border-r p-4"
+                  key={label}
+                  className="flex justify-between gap-4 px-5 py-3 text-sm"
                   style={{ borderColor: "var(--border)" }}
                 >
-                  <p className="text-[10px] uppercase text-white/40">
-                    Equipment
-                  </p>
-                  <p className="mt-1 text-sm">{workout.equipment}</p>
-                </div>
+                  <dt className="text-xs font-semibold uppercase tracking-widest text-white/40">
+                    {label}
+                  </dt>
 
-                <div
-                  className="border-b p-4"
+                  <dd className="text-right font-medium">{value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <h2 className="mt-8 font-display text-xl font-bold uppercase">
+              Instructions
+            </h2>
+
+            <ol className="mt-4 space-y-3">
+              {workout.instructions.map((step, index) => (
+                <li
+                  key={index}
+                  className="flex gap-4 rounded-lg border bg-[#111419] p-4 text-sm"
                   style={{ borderColor: "var(--border)" }}
                 >
-                  <p className="text-[10px] uppercase text-white/40">
-                    Difficulty
-                  </p>
-                  <p className="mt-1 text-sm">{workout.difficulty}</p>
-                </div>
+                  <span
+                    className="grid h-7 w-7 shrink-0 place-items-center rounded-full font-bold text-black"
+                    style={{ backgroundColor: "var(--accent)" }}
+                  >
+                    {index + 1}
+                  </span>
 
-                <div
-                  className="border-r p-4"
-                  style={{ borderColor: "var(--border)" }}
-                >
-                  <p className="text-[10px] uppercase text-white/40">Sets</p>
-                  <p className="mt-1 text-sm">{workout.sets}</p>
-                </div>
+                  <span className="pt-1 text-white/60">{step}</span>
+                </li>
+              ))}
+            </ol>
 
-                <div className="p-4">
-                  <p className="text-[10px] uppercase text-white/40">Reps</p>
-                  <p className="mt-1 text-sm">{workout.reps}</p>
-                </div>
-              </div>
-            </div>
-
-            <WorkoutActions workoutId={workout.id} />
+            <WorkoutActions workout={workout} />
           </div>
         </div>
-
-        <section className="mt-16">
-          <h2 className="font-display text-3xl font-bold uppercase">
-            How to Perform
-          </h2>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {workout.instructions.map((instruction, index) => (
-              <div
-                key={index}
-                className="rounded-xl border bg-[#111419] p-5"
-                style={{ borderColor: "var(--border)" }}
-              >
-                <span
-                  className="font-display text-2xl font-bold"
-                  style={{ color: "var(--accent)" }}
-                >
-                  0{index + 1}
-                </span>
-
-                <p className="mt-3 text-sm leading-6 text-white/60">
-                  {instruction}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
 
       <Footer />
