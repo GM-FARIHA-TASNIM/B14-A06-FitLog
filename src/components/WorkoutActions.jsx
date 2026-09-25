@@ -1,42 +1,53 @@
 "use client";
 
-import { Bookmark, Check, Plus } from "lucide-react";
+import { Bookmark, Plus } from "lucide-react";
 import { useFitLog } from "@/context/FitLogContext";
 
-export default function WorkoutActions({ workoutId }) {
-  const { plan, ready, addToPlan, saveWorkout, isInPlan, isSaved } =
-    useFitLog();
+export default function WorkoutActions({ workout }) {
+  const { plan, ready, addToPlan, addToSaved, isInPlan, isSaved } = useFitLog();
 
-  const inPlan = isInPlan(workoutId);
-  const saved = isSaved(workoutId);
+  const inPlan = isInPlan(workout.id);
+  const saved = isSaved(workout.id);
   const planFull = plan.length >= 5;
+
+  function handleAdd() {
+    addToPlan(workout.id);
+  }
+
+  function handleSave() {
+    if (saved) {
+      return;
+    }
+
+    addToSaved(workout.id);
+  }
 
   return (
     <div className="mt-8 flex flex-col gap-3 sm:flex-row">
       <button
-        onClick={() => addToPlan(workoutId)}
+        onClick={handleAdd}
         disabled={!ready || inPlan || planFull}
-        className="inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-xs font-bold uppercase text-black disabled:cursor-not-allowed disabled:opacity-50"
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-bold uppercase text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
         style={{ backgroundColor: "var(--accent)" }}
       >
-        {inPlan ? <Check size={16} /> : <Plus size={16} />}
+        <Plus size={16} />
 
         {inPlan
-          ? "Added to Plan"
+          ? "In today's plan"
           : planFull
-            ? "Plan Full"
-            : "Add to Today's Plan"}
+            ? "Plan is full (5/5)"
+            : "Add to today's plan"}
       </button>
 
       <button
-        onClick={() => saveWorkout(workoutId)}
-        disabled={!ready}
-        className="inline-flex items-center justify-center gap-2 rounded-md border px-5 py-3 text-xs font-bold uppercase text-white transition hover:bg-white/5"
+        onClick={handleSave}
+        disabled={!ready || saved}
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-md border px-6 py-3 text-sm font-bold uppercase transition hover:border-[#c8ff00] hover:text-[#c8ff00] disabled:cursor-not-allowed disabled:opacity-70"
         style={{ borderColor: "var(--border)" }}
       >
-        <Bookmark size={16} />
+        <Bookmark size={16} fill={saved ? "currentColor" : "none"} />
 
-        {saved ? "Saved" : "Save for Later"}
+        {saved ? "Saved" : "Save for later"}
       </button>
     </div>
   );
