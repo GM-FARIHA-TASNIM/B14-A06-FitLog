@@ -9,10 +9,10 @@ workout progress.
 
 ## 🔗 Project Links
 
-- **Live Website:** [Visit Live Website](YOUR_LIVE_LINK)
-- **GitHub Repository:** [View GitHub Repository](YOUR_GITHUB_LINK)
+- **Live Website:** [Visit Live Website]
+- **GitHub Repository:** [View GitHub Repository]
 
-> Replace `YOUR_LIVE_LINK` and `YOUR_GITHUB_LINK` with your actual project links.
+
 
 ---
 
