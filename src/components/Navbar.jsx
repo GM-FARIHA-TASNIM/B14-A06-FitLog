@@ -3,19 +3,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useFitLog } from "@/context/FitLogContext";
 
-export default function Navbar({ planCount = 0, savedCount = 0 }) {
+export default function Navbar() {
   const pathname = usePathname();
+  const { plan, saved } = useFitLog();
 
   const isHome = pathname === "/";
   const isMyPlan = pathname === "/my-plan";
 
   return (
     <header
-      className="border-b bg-transparent"
+      className="sticky top-0 z-40 border-b bg-[#0b0d0f]/90 backdrop-blur"
       style={{ borderColor: "var(--border)" }}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
+      <nav className="mx-auto grid max-w-7xl grid-cols-2 items-center gap-y-3 px-4 py-4 sm:px-6 md:grid-cols-3">
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/logo.png"
@@ -30,55 +32,52 @@ export default function Navbar({ planCount = 0, savedCount = 0 }) {
           </span>
         </Link>
 
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 sm:flex">
+        <div className="col-span-2 flex justify-center gap-1 md:col-span-1 md:col-start-2">
           <Link
             href="/"
-            className={`rounded-full px-4 py-2 text-xs transition ${
-              isHome ? "font-medium" : "hover:bg-white/5"
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+              isHome
+                ? "bg-[#252e04] text-black"
+                : "text-white/60 hover:text-white"
             }`}
-            style={{
-              backgroundColor: isHome ? "#182400" : "transparent",
-              color: isHome ? "#c8ff00" : "#c8ff00",
-            }}
           >
             Workouts
           </Link>
 
           <Link
             href="/my-plan"
-            className={`rounded-full px-4 py-2 text-xs transition ${
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
               isMyPlan
-                ? "font-medium text-[#c8ff00]"
-                : "text-white hover:bg-white/5"
+                ? "bg-[#252e04] text-black"
+                : "text-white/60 hover:text-white"
             }`}
-            style={isMyPlan ? { backgroundColor: "#182400" } : undefined}
           >
             My Plan
           </Link>
-        </nav>
+        </div>
 
-        <div className="flex items-center gap-3 text-xs sm:gap-4">
-          <Link href="/my-plan" className="flex items-center gap-1.5">
-            <span className="text-white/60">Plan</span>
-            <span
-              className="flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold text-black"
-              style={{ backgroundColor: "var(--accent)" }}
-            >
-              {planCount}
+        <div className="flex items-center justify-end gap-4 text-sm">
+          <Link href="/my-plan" className="flex items-center gap-2 text-white">
+            Plan
+            <span className="grid h-6 min-w-6 place-items-center rounded-full bg-[#c8ff00] px-1.5 text-xs font-bold text-black">
+              {plan.length}
             </span>
           </Link>
 
-          <Link href="/my-plan" className="flex items-center gap-1.5">
-            <span className="text-white/60">Saved</span>
+          <Link
+            href="/my-plan"
+            className="flex items-center gap-2 text-white/60 hover:text-white"
+          >
+            Saved
             <span
-              className="flex h-5 min-w-5 items-center justify-center rounded-full border px-1.5 text-[10px] text-white"
+              className="grid h-6 min-w-6 place-items-center rounded-full border px-1.5 text-xs font-semibold text-white"
               style={{ borderColor: "var(--border)" }}
             >
-              {savedCount}
+              {saved.length}
             </span>
           </Link>
         </div>
-      </div>
+      </nav>
     </header>
   );
 }
