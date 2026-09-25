@@ -3,8 +3,8 @@
 :root {
   --background: #0b0d0f;
   --surface: #111419;
-  --surface-light: #151920;
-  --border: #242931;
+  --surface-light: #171a20;
+  --border: #292d34;
   --text: #f4f4f5;
   --muted: #8b919c;
   --accent: #c8ff00;
@@ -50,6 +50,6 @@ img {
   color: #0b0d0f;
 }
 
-/*.font-display {
+.font-display {
   font-family: var(--font-oswald), sans-serif;
-}*/
+}

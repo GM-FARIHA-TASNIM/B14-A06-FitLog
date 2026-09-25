@@ -12,11 +12,11 @@ export default function NotFound() {
         </p>
 
         <h1 className="mt-3 font-display text-5xl font-bold uppercase">
-          Workout not found
+          Page not found
         </h1>
 
         <p className="mt-4 text-sm text-white/50">
-          The workout or page you are looking for does not exist.
+          The page you&apos;re looking for doesn&apos;t exist.
         </p>
 
         <Link

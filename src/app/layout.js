@@ -10,7 +10,8 @@ const oswald = Oswald({
 
 export const metadata = {
   title: "FitLog — Workout Library",
-  description: "Train with intent. Log every set.",
+  description:
+    "Pick a lift, lock it into today's plan and track the week's work with FitLog.",
 };
 
 export default function RootLayout({ children }) {
@@ -19,7 +20,8 @@ export default function RootLayout({ children }) {
       <body className={oswald.variable}>
         <FitLogProvider>
           {children}
-          <Toaster position="top-right" theme="dark" richColors />
+
+          <Toaster theme="dark" position="bottom-right" richColors />
         </FitLogProvider>
       </body>
     </html>
