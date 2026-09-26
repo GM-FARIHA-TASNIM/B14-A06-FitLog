@@ -9,7 +9,8 @@ workout progress.
 
 ## 🔗 Project Links
 
-- **Live Website:** [Visit Live :** [[https://github.com/GM-FARIHA-TASNIM/B14-A06-FitLog]
+- **Live Website:** [(https://b14-a06-fit-log-sooty.vercel.app/)]
+-  **GitHub repo link :** [https://github.com/GM-FARIHA-TASNIM/B14-A06-FitLog]
 
 
 
