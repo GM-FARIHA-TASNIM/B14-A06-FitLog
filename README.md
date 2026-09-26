@@ -9,8 +9,7 @@ workout progress.
 
 ## 🔗 Project Links
 
-- **Live Website:** [Visit Live Website]
-- **GitHub Repository:** [View GitHub Repository]
+- **Live Website:** [Visit Live :** [[https://github.com/GM-FARIHA-TASNIM/B14-A06-FitLog]
 
 
 
